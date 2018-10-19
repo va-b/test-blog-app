@@ -36,10 +36,9 @@ export interface IStoreCrudMixin<E extends IEntity, S extends AbstractStateWithC
         getListPart( me: ActionContext<S, AppState> ): Promise<E[]>;
         getDetails( me: ActionContext<S, AppState>, id: number ): Promise<E>;
         save( me: ActionContext<S, AppState> ): Promise<any>;
+        delete( me: ActionContext<S, AppState>, id: number ): Promise<void>;
     };
     getters: {
-        list( state: S ): E[];
-        editedEntity(state: S): E;
     };
 }
 
@@ -126,10 +125,19 @@ export function GenerateStoreCrudMixin <E extends IEntity, S extends AbstractSta
                 me.state.isSaving = false;
                 return refreshed;
             },
+            async delete( me: ActionContext<S, AppState>, id: number ): Promise<void>
+            {
+                me.state.isSaving = true;
+                let res: boolean = await iapp.serviceFactory.getBasicCrud<E>(apiKey).toDelete(id)
+                if(res)
+                {
+                    let i: number = me.state.entities.findIndex(x => x.id == id);
+                    me.state.entities.splice(i, 1);
+                }
+                me.state.isSaving = false;
+            }
         },
         getters: {
-            list: state => state.entities,
-            editedEntity: state => state.editedEntity,
         },
     } as IStoreCrudMixin<E, S>;
 }

@@ -5,7 +5,7 @@
             Awesome Blog
         </v-toolbar-title>
         <v-spacer/>
-        <v-btn flat round>
+        <v-btn flat round @click="$router.push('/add')">
             <v-icon dark small left>fa-plus</v-icon>
             Добавить запись
         </v-btn>

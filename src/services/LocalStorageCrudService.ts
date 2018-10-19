@@ -28,16 +28,19 @@ export default class LocalStorageCrudService<T extends IEntity>
 
     private set keys(v: number[])
     {
+        debugger;
         let res: string = JSON.stringify(v);
         window.localStorage.setItem(this.ks, res);
     }
 
     public async toCreate( entity: T ): Promise<number>
     {
+        debugger;
         const newid: number = this.keys.length > 0  ? this.keys[this.keys.length] + 1 : 0;
         entity.id = newid;
         let res: string = JSON.stringify(entity);
         window.localStorage.setItem(this.getKey(newid), res);
+        this.keys = [...this.keys, newid];
         await this.imitateAjax(100);
         return newid;
     }
@@ -53,8 +56,7 @@ export default class LocalStorageCrudService<T extends IEntity>
     public async toDelete( id: number ): Promise<boolean>
     {
         window.localStorage.removeItem(this.getKey(id));
-        const removeKeyIndex: number = this.keys.findIndex(x => x == id);
-        this.keys.splice(removeKeyIndex, 1);
+        this.keys = this.keys.filter(x => x != id);
         await this.imitateAjax(50);
         return true;
     }
@@ -74,7 +76,6 @@ export default class LocalStorageCrudService<T extends IEntity>
         let trueEnd: number;
 
         await this.imitateAjax(200);
-
         if(!!parentId)
         {
             storeKeys = this.keys.map(x => this.getKey(x));
@@ -85,7 +86,7 @@ export default class LocalStorageCrudService<T extends IEntity>
             return items.slice(start, trueEnd);
         }
 
-        trueEnd = ( end < this.keys.length - 1) ? end : this.keys.length - 1;
+        trueEnd = end < this.keys.length ? end : this.keys.length;
         storeKeys = this.keys.slice(start, trueEnd).map(x => this.getKey(x));
         items = storeKeys.map(x => DefaultMapping(JSON.parse(window.localStorage.getItem(x))) as T);
         return items;

@@ -17,12 +17,12 @@ export default new Router({
             component: BlogEdit
         },
         {
-            path: '/edit:id',
+            path: '/edit',
             component: BlogEdit,
             props: (route) => ({ myId: route.query.id })
         },
         {
-            path: '/entry:id',
+            path: '/record',
             component: BlogEntr,
             props: (route) => ({ myId: route.query.id })
         },
