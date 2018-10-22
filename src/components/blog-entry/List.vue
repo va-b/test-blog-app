@@ -1,6 +1,6 @@
 <template>
-    <v-layout column>
-        <v-flex xs12 v-for="item in $store.state.bloge.entities" :key="item.id">
+    <v-layout row wrap>
+        <v-flex xs12 md6 xl4 v-for="item in $store.state.bloge.entities" :key="item.id">
             <entry :record="item"/>
         </v-flex>
     </v-layout>
@@ -13,6 +13,9 @@
                })
     export default class List extends Vue
     {
-        created(){this.$store.dispatch('bloge/getList');}
+        created()
+        {
+            this.$store.dispatch('bloge/getList');
+        }
     }
 </script>

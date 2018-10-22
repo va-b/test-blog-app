@@ -2,7 +2,7 @@
     <v-app>
         <a-header/>
         <v-content>
-            <v-container grid-list-md>
+            <v-container grid-list-lg>
                 <router-view/>
             </v-container>
         </v-content>

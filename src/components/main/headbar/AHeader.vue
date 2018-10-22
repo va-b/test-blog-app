@@ -1,9 +1,9 @@
 <template>
-    <v-toolbar app dense dark fixed color="primary">
-        <v-toolbar-title class="white--text">
-            <v-icon dark class="mr-2">fa-code</v-icon>
+    <v-toolbar app dense dark fixed color="teal">
+        <v-btn flat large round @click="$router.push('/')" class="px-3">
+            <v-icon dark left>fa-code</v-icon>
             Awesome Blog
-        </v-toolbar-title>
+        </v-btn>
         <v-spacer/>
         <v-btn flat round @click="$router.push('/add')">
             <v-icon dark small left>fa-plus</v-icon>

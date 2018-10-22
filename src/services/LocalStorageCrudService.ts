@@ -28,15 +28,14 @@ export default class LocalStorageCrudService<T extends IEntity>
 
     private set keys(v: number[])
     {
-        debugger;
+        v = v.sort((a,b) => a-b);
         let res: string = JSON.stringify(v);
         window.localStorage.setItem(this.ks, res);
     }
 
     public async toCreate( entity: T ): Promise<number>
     {
-        debugger;
-        const newid: number = this.keys.length > 0  ? this.keys[this.keys.length] + 1 : 0;
+        const newid: number = this.keys.length > 0  ? this.keys[this.keys.length-1] + 1 : 1;
         entity.id = newid;
         let res: string = JSON.stringify(entity);
         window.localStorage.setItem(this.getKey(newid), res);
@@ -82,7 +81,7 @@ export default class LocalStorageCrudService<T extends IEntity>
             items = storeKeys
                 .map(x => DefaultMapping(JSON.parse(window.localStorage.getItem(x))) as T)
                 .filter(x => x.parentId == parentId);
-            trueEnd = ( end < items.length - 1) ? end : items.length - 1;
+            trueEnd = end < items.length ? end : items.length;
             return items.slice(start, trueEnd);
         }
 
