@@ -1,6 +1,6 @@
 import { IEntity } from "@/models/abstractions";
 
-export interface ICrudService<T extends IEntity>
+export interface ICrudService<T extends IEntity> extends IService
 {
     getList(start: number, parentId: number): Promise<T[]>;
     getDetails(id: number): Promise<T>;
@@ -8,3 +8,6 @@ export interface ICrudService<T extends IEntity>
     toUpdate( entity: T): Promise<number>;
     toDelete( id: number): Promise<boolean>;
 }
+
+export interface IService
+{}

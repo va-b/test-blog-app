@@ -53,7 +53,12 @@ export function GenerateStoreCrudMixin <E extends IEntity, S extends AbstractSta
             },
             setParentEntityId( state: S, parentId: number )
             {
-                state.parentEntityId = parentId;
+                if(state.parentEntityId != parentId)
+                {
+                    state.parentEntityId = parentId;
+                    state.isCacheValid = false;
+                }
+
             },
             setCurrentItem( state: S, id: number )
             {

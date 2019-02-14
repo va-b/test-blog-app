@@ -1,17 +1,20 @@
 import { IEntity } from "@/models/abstractions";
-import { ICrudService } from "@/services/abstractions";
+import { ICrudService, IService } from "@/services/abstractions";
 import LocalStorageCrudService from "@/services/LocalStorageCrudService";
 
 export class ServicesFactory
 {
-    
-    private servicesStore: any = {};
+    private servicesStorage: IService[] = [];
+
+    private serviceRegister<TService extends IService>(S: () => TService, key: string): TService
+    {
+        if(!this.servicesStorage[key]) this.servicesStorage[key] = S();
+        return this.servicesStorage[key];
+    }
 
     public getBasicCrud<E extends IEntity>(k: EntitiesKeys): ICrudService<E>
     {
-        if(!this.servicesStore[k])
-            this.servicesStore[k] = new LocalStorageCrudService<E>(k);
-        return this.servicesStore[k];
+        return this.serviceRegister<ICrudService<E>>(() => new LocalStorageCrudService<E>(k), k)
     }
 }
 
